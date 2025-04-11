@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moderation Staff</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://kit.fontawesome.com/c06f2af5e6.js" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header>
+<h1 id="live-time"></h1>
+</header>
+<br><br>
+<!-- Password Protection -->
+<div class="container">
+<h2>Locked Page</h2>
+<p>Please enter your username and password provided by your supervisor.</p>
+
+<!-- Username and Password Input -->
+<input type="text" id="usernameInput" placeholder="Enter username...">
+<input type="password" id="passwordInput" placeholder="Enter password provided by supervisor...">
+<button id="submitLoginBtn" class="button">Login</button>
+</div>
+
+<br><br>
+<!-- Main Content (Hidden by default) -->
+<div class="content" id="content" style="display: none;">
+  <h2>Moderation Staff Panel</h2>
+  <div id="liveDate" style="font-family: 'Montserrat', sans-serif; font-size: 24px; text-align: center; margin-top: 20px;"></div>
+  <p>Welcome to the Moderation Staff Information Page. Here, you can find Staff Notices, Announcements, Private Updates, and Staff Guidelines/Escalation Policy.</p>
+
+  <br><br>
+  <h2>Staff Notices</h2>
+  <p>No current notices at this time.</p>
+
+  <br><br>
+  <h2>Staff Announcements</h2>
+  <p>All Moderation Staff members are required to be active for at least 3 hours a week.</p>
+
+  <br><br>
+  <h2>Escalation Policies and Staff Guidelines</h2>
+  <p>The escalation policy and staff guideline document are currently being developed. Check back for updates.</p>
+
+  <a href="msep.pdf" class="nav-button-link"><button class="buttonorange">View PDF</button></a>
+
+  <a href="#" class="nav-button-link"><button class="buttonred">Log out</button></a>
+  
+  <!-- Password-protected Images Section -->
+  <h2>Image Gallery</h2>
+  <div class="image-gallery" style="display: none;" id="imageGallery">
+    <img src="IMG_3817.JPG" alt="Image 1">
+    <img src="IMG_3825.JPG" alt="Image 2">
+    <img src="IMG_3829.JPG" alt="Image 3">
+    <img src="IMG_3824.JPG" alt="Image 4">
+    <img src="IMG_3821.JPG" alt="Image 5">
+  </div>
+</div>
+
+<!-- Custom Right-click Menu -->
+<div id="custom-menu" class="custom-menu">
+  <ul>
+    <li><a href="#" class="option1">Log out</a></li>
+    <li><a id="livetime"></a></li>
+  </ul>
+</div>
+
+<script>
+  const users = [
+    { username: "jay", password: "ni" }
+  ];
+
+  const submitLoginBtn = document.getElementById('submitLoginBtn');
+  const usernameInput = document.getElementById('usernameInput');
+  const passwordInput = document.getElementById('passwordInput');
+  const contentDiv = document.getElementById('content');
+  const header = document.querySelector('header h1');
+  const imageGallery = document.getElementById('imageGallery');
+
+  submitLoginBtn.addEventListener('click', function() {
+    const enteredUsername = usernameInput.value;
+    const enteredPassword = passwordInput.value;
+
+    // Check if the username and password combination is valid
+    const user = users.find(u => u.username === enteredUsername && u.password === enteredPassword);
+
+    if (user) {
+      // Hide the login box and show the content
+      document.querySelector('.container').style.display = 'none';
+      contentDiv.style.display = 'block';
+
+      // Show personalized greeting in header
+      header.textContent = `Welcome, ${enteredUsername}`;
+
+      // Show the image gallery
+      imageGallery.style.display = 'block';
+    } else {
+      alert('Incorrect username or password. Please try again.');
+    }
+  });
+
+  // Disable right-click and developer tools
+  document.addEventListener('contextmenu', function(event) {
+    event.preventDefault(); // Disable right-click
+  });
+
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'F12' || event.ctrlKey && event.shiftKey && event.key === 'I') {
+      event.preventDefault(); // Disable F12 and Ctrl+Shift+I (inspect element)
+    }
+  });
+
+  // Custom right-click menu functionality
+  const customMenu = document.getElementById('custom-menu');
+
+  document.addEventListener('contextmenu', function(event) {
+    event.preventDefault(); // Prevent the default context menu
+    customMenu.style.left = `${event.pageX}px`;
+    customMenu.style.top = `${event.pageY}px`;
+    customMenu.style.display = 'block';
+  });
+
+  document.addEventListener('click', function() {
+    customMenu.style.display = 'none'; // Hide the custom menu on click
+  });
+</script>
+
+<script>
+  // Function to format and display the current date without the time
+  function displayDate() {
+    const today = new Date();
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const dateStr = today.toLocaleDateString('en-US', options);
+    document.getElementById('liveDate').innerText = dateStr;
+  }
+
+  // Call displayDate function when the page loads
+  window.onload = displayDate;
+</script>
+
+<script>
+  function updateTime() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const timeString = `${hours}:${minutes}:${seconds}`;
+
+    // Update the element with id 'live-time'
+    document.getElementById('live-time').textContent = timeString;
+  }
+
+  // Update the time every second
+  setInterval(updateTime, 1000);
+  
+  // Initial call to display time right away
+  updateTime();
+</script>
+
+<script>
+  function updateTime() {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    const timeString = `${hours}:${minutes}:${seconds}`;
+    document.getElementById('livetime').innerText = `${timeString}`;
+  }
+
+  setInterval(updateTime, 1000); // Update the time every second
+</script>
+
+</body>
+</html>
