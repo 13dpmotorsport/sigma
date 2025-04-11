@@ -678,6 +678,35 @@ form input:focus, form textarea:focus {
     <li><a id="livetime"></a></li>
   </ul>
 </div>
+  <button id="scrollButton">Start Scrolling</button>
+
+  <script>
+    let isScrolling = false;
+    let scrollInterval;
+
+    // Scroll Toggle Button Event Listener
+    document.getElementById("scrollButton").addEventListener("click", function() {
+      if (isScrolling) {
+        clearInterval(scrollInterval);
+        this.textContent = "Start Scrolling";
+      } else {
+        this.textContent = "Stop Scrolling";
+        startScrolling();
+      }
+      isScrolling = !isScrolling;
+    });
+
+    // Scroll function
+    function startScrolling() {
+      scrollInterval = setInterval(() => {
+        if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
+          window.scrollTo(0, 0);  // Scroll back to top
+        } else {
+          window.scrollBy(0, 5);  // Scroll down
+        }
+      }, 20); // Adjust the interval for smoothness
+    }
+  </script>
 
 <script>
   const users = [
